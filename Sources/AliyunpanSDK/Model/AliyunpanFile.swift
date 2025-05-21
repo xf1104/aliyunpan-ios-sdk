@@ -280,11 +280,32 @@ extension AliyunpanFile {
             public let template_name: String?
             public let template_width: Int?
             public let template_height: Int?
-            /// 是否原画
             public let keep_original_resolution: Bool?
             public let stage: String?
             public let status: Status
             public let url: URL?
+        
+            private enum CodingKeys: String, CodingKey {
+                case template_id, template_name, template_width, template_height, keep_original_resolution, stage, status, url
+            }
+        
+            public init(from decoder: Decoder) throws {
+                let container = try decoder.container(keyedBy: CodingKeys.self)
+                template_id = try container.decode(String.self, forKey: .template_id)
+                template_name = try? container.decode(String.self, forKey: .template_name)
+                template_width = try? container.decode(Int.self, forKey: .template_width)
+                template_height = try? container.decode(Int.self, forKey: .template_height)
+                keep_original_resolution = try? container.decode(Bool.self, forKey: .keep_original_resolution)
+                stage = try? container.decode(String.self, forKey: .stage)
+                status = try container.decode(Status.self, forKey: .status)
+                if let urlString = try? container.decode(String.self, forKey: .url),
+                   let realUrl = URL(string: urlString),
+                   !urlString.isEmpty {
+                    url = realUrl
+                } else {
+                    url = nil
+                }
+            }
         }
         
         public struct LiveTranscodingSubtitleTask: Codable {
