@@ -68,7 +68,7 @@ class AliyunpanAuthenticator: NSObject {
             of: "alipan.com/applink/authorize",
             with: "alipan.com/o/oauth/authorize")
         // TODO: - auto_login 服务修复后需要去除主动 auto_login 参数
-        guard let url = URL(string: urlString + "&source=app_link&auto_login=true") else {
+        guard let url = URL(string: urlString + "&source=app_link") else {
             throw AliyunpanError.AuthorizeError.invalidAuthorizeURL
         }
         return try await startAuthenticationSession(url)
