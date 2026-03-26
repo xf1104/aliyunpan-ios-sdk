@@ -94,7 +94,9 @@ class AliyunpanAuthenticator: NSObject {
 #else
                 session.presentationContextProvider = self
 #endif
-                session.prefersEphemeralWebBrowserSession = true
+#if !os(tvOS)
+                  session.prefersEphemeralWebBrowserSession = true
+#endif
                 DispatchQueue.main.async {
                     session.start()
                 }
